@@ -2,7 +2,6 @@ import { trackEffects, triggerEffects, isTracking, trigger } from "./effect";
 import { createDep } from "./dep";
 import { isObject, hasChanged } from "@mini-vue/shared";
 import { reactive } from "./reactive";
-import { t } from "vitest/dist/index-ea17aa0c";
 
 export class RefImpl {
   private _rawValue: any;
@@ -40,6 +39,7 @@ function createRef(value) {
 export function trackRefValue(ref) {
   if (isTracking()) {
     trackEffects(ref.dep); //意味着当前正在执行一个副作用函数，并且需要追踪其依赖。
+    //ref 的 trackEffect 在收集依赖的时候建立依赖收集表，是因为 ref 的值变化会影响到依赖它的副作用函数，所以要在访问（收集依赖）时就建立这种关联关系
   }
 }
 export function triggerRefValue(ref) {

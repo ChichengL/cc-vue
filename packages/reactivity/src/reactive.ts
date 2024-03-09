@@ -18,7 +18,7 @@ export function reactive(target) {
   return createReactiveObject(target, reactiveMap, mutableHandlers);
 }
 export function readonly(target) {
-  return createReactiveObject(target, readonlyMap, mutableHandlers);
+  return createReactiveObject(target, readonlyMap, readonlyHandlers);
 }
 
 export function shallowReadonly(target) {
