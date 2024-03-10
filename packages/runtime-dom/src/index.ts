@@ -1,4 +1,3 @@
-import { createApp } from "./index";
 import { isOn } from "@mini-vue/shared";
 import { createRenderer } from "@mini-vue/runtime-core";
 
@@ -76,5 +75,4 @@ function ensureRenderer() {
 export const createApp = (...args) => {
   return ensureRenderer().createApp(...args);
 };
-
 export * from "@mini-vue/runtime-core";

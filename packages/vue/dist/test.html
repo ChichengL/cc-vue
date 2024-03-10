@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1>hello World {{ name }}</h1>
+        <test></test>
+    </div>
+</body>
+<script src="./mini-vue.esm-bundler.js" type="module">
+
+</script>
+<script type="module">
+    import { createApp } from './mini-vue.esm-bundler.js'
+    const app = createApp()
+    console.log(app)
+    app.component('test',{
+        template: '<h1>hello World {{ name }}</h1>',
+        data(){
+            return {
+                name: 'cc'
+            }
+        }
+    })
+    app.mount('#app')
+</script>
+
+</html>

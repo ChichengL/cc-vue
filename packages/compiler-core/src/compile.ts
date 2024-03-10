@@ -8,7 +8,7 @@ import { transformText } from "./transforms/transformText";
 
 export function baseCompile(template:string,options){
     const ast = baseParse(template) //创建ast语法树
-    transform(
+    transform( //特殊处理ast语法树
         ast,
         Object.assign(options,{
             nodeTransforms:[transformExpression,transformElement,transformText]

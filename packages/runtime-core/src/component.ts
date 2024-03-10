@@ -41,7 +41,11 @@ function setupStatefulComponent(instance) {
   instance.proxy = new Proxy(instance.ctx, PublicInstanceProxyHandlers);
   const Component = instance.type; //{setup,render,template}
   //执行setup方法，获取setup返回的状态
-  const { setup } = Component;
+  let setup;
+  if(Component){
+    setup = Component.setup;
+  }
+  
   if (setup) {
     //设置当前实例对象
     setCurrentInstance(instance);
@@ -80,15 +84,17 @@ function handleSetupResult(instance, setupResult) {
 function finishComponentSetup(instance) {
   //给instance设置render
   const Component = instance.type;
-  if (!instance.render) {
-    //如果complie有值 并且当前组件没有render，那么需要将template编译为render函数
-    if (compile && !Component.render) {
-      if (Component.template) {
-        const template = Component.template;
-        Component.render = compile(template);
+  if (Component) {
+    if (!instance.render) {
+        //如果complie有值 并且当前组件没有render，那么需要将template编译为render函数
+        if (compile && !Component.render) {
+          if (Component.template) {
+            const template = Component.template;
+            Component.render = compile(template);
+          }
+        }
+        instance.render = Component.render;
       }
-    }
-    instance.render = Component.render;
   }
 }
 

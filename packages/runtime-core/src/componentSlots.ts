@@ -4,7 +4,7 @@ import { ShapeFlags } from '@mini-vue/shared';
 export function initSlots(instance: any, children: any){
     const {vnode} = instance
 
-    if(vnode.shapeFlags & ShapeFlags.SLOTS_CHILDREN){//slots有子节点
+    if(vnode.shapeFlag & ShapeFlags.SLOTS_CHILDREN){//slots有子节点
         normalizeObjectSlots(children, (instance.slots = {}))
     }
 }

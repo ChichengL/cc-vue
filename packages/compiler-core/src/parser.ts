@@ -23,9 +23,9 @@ function parseChildren(context: any, ancestors: any) {
   while (!isEnd(context, ancestors)) {
     let node;
     const s = context.source;
-    if (startWith(s, "{{")) {
+    if (startsWith(s, "{{")) {
       //插值语法
-      node = parseInterpolation(context, ancestors);
+      node = parseInterpolation(context);
     } else if (s[0] === "<") {
       if (s[1] === "/") {
         //元素语法
@@ -51,10 +51,10 @@ function parseChildren(context: any, ancestors: any) {
 function isEnd(context: any, ancestors) {
   //检测是否为结束标签，且如果没有匹配的开始标签也要结束
   const s = context.source;
-  if (context.source.startWith("<")) {
+  if (context.source.startsWith("<")) {
     //从后门往前面查，因为便签存在的话，应该是ancestors的最后一个元素
     for (let i = ancestors.length - 1; i >= 0; i--) {
-      if (startWithEndTagOpen(s, ancestors[i].tag)) {
+      if (startsWithEndTagOpen(s, ancestors[i].tag)) {
         return true;
       }
     }
@@ -63,7 +63,7 @@ function isEnd(context: any, ancestors) {
 }
 
 function parseElement(context, ancestors) {
-  const element = parTag(context, TagType.Start);
+  const element = parseTag(context, TagType.Start);
 
   ancestors.push(element);
   const children = parseChildren(context, ancestors);
@@ -71,7 +71,7 @@ function parseElement(context, ancestors) {
 
   //解析end tag是为了检测语法是不是正确的
   //检测是不是和start tag一致
-  if (startWithEndTagOpen(context.source, element.tag)) {
+  if (startsWithEndTagOpen(context.source, element.tag)) {
     parseTag(context, TagType.End);
   } else {
     throw new Error(`missing end tag for element <${element.tag}>`);
@@ -83,7 +83,7 @@ function startsWithEndTagOpen(source: string, tag: string) {
   //头部是否时</开头的
   // 看看是不是和tag一样
   return (
-    startWith(source, "</") &&
+    startsWith(source, "</") &&
     source.slice(2, 2 + tag.length).toLowerCase() === tag.toLowerCase()
   );
 }
@@ -161,4 +161,16 @@ function parseTextData(context: any, length: number): any {
 }
 function advanceBy(context: any, numberOfCharacters: number) {
     context.source = context.source.slice(numberOfCharacters);
+}
+
+function startsWith(source: string, str: string): boolean {
+    return source.startsWith(str);
+}
+
+function createRoot(children){
+    return {
+        type:NodeTypes.ROOT,
+        children,
+        helpers:{}
+    }
 }

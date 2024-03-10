@@ -11,6 +11,7 @@ export default {
       "process.env.NODE_ENV": JSON.stringify("development"),
       "process.env.VUE_ENV": JSON.stringify("browser"),
       "process.env.LANGUAGE": JSON.stringify(process.env.LANGUAGE),
+      preventAssignment: true, // 添加或修改这一行
     }),
     resolve(),
     commonjs(),
